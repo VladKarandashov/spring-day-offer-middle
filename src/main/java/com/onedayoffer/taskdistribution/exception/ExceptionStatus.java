@@ -14,6 +14,7 @@ public enum ExceptionStatus {
 
     INTERNAL_ERROR(1000, "Произошла внезапная ошибка на сервере"),
     VALIDATION_ERROR(2001, "Неправильно составлен запрос"),
+    FORBIDDEN(2002, "ОШибка доступа"),
     NOT_FOUND_EMPLOYEE(3001, "Не смог найти в БД нужного employee"),
     NOT_FOUND_TASK(3002, "Не смог найти в БД нужного Task")
     ;

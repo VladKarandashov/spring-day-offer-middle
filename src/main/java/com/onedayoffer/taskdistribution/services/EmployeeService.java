@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -56,6 +57,10 @@ public class EmployeeService {
     @Transactional
     public void changeTaskStatus(Integer employeeId, Integer taskId, TaskStatus status) {
         Task task = getTaskById(taskId);
+        if (!Objects.equals(task.getEmployee().getId(), employeeId)) {
+            log.error("Данная задача принадлежит другому Employee");
+            throw new BusinessException(ExceptionStatus.FORBIDDEN);
+        }
         task.setStatus(status);
         taskRepository.save(task);
     }
