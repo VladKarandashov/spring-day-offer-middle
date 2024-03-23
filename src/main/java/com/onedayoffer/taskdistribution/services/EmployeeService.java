@@ -35,7 +35,7 @@ public class EmployeeService {
         List<Employee> employeeList;
         if (StringUtils.isNotBlank(sortDirection)) {
             Sort.Direction direction = Sort.Direction.fromOptionalString(sortDirection).orElseThrow(() -> {
-                log.warn("Не правильно задан порядок сортировки {} (ASС/DESC)", sortDirection);
+                log.error("Не правильно задан порядок сортировки {} (ASС/DESC)", sortDirection);
                 return new BusinessException(ExceptionStatus.VALIDATION_ERROR, "Порядок сортировки должен быть ASС/DESC");
             });
             employeeList = employeeRepository.findAllAndSort(Sort.by(direction, "fio"));
@@ -63,8 +63,13 @@ public class EmployeeService {
     }
 
     @Transactional
-    public void changeTaskStatus(Integer taskId, TaskStatus status) {
-        throw new java.lang.UnsupportedOperationException("implement changeTaskStatus");
+    public void changeTaskStatus(Integer employeeId, Integer taskId, TaskStatus status) {
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> {
+            log.error("Не найдена Task с id = {}", taskId);
+            return new BusinessException(ExceptionStatus.NOT_FOUND_TASK);
+        });
+        task.setStatus(status);
+        taskRepository.save(task);
     }
 
     @Transactional
