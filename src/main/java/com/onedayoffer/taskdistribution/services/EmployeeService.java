@@ -8,6 +8,7 @@ import com.onedayoffer.taskdistribution.exception.ExceptionStatus;
 import com.onedayoffer.taskdistribution.repositories.EmployeeRepository;
 import com.onedayoffer.taskdistribution.repositories.TaskRepository;
 import com.onedayoffer.taskdistribution.repositories.entities.Employee;
+import com.onedayoffer.taskdistribution.repositories.entities.Task;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +57,9 @@ public class EmployeeService {
     }
 
     public List<TaskDTO> getTasksByEmployeeId(Integer id) {
-        throw new java.lang.UnsupportedOperationException("implement getTasksByEmployeeId");
+        List<Task> taskListByEmployeeId =  taskRepository.findAllByEmployeeId(id);
+        Type listType = new TypeToken<List<TaskDTO>>() {}.getType();
+        return modelMapper.map(taskListByEmployeeId, listType);
     }
 
     @Transactional
