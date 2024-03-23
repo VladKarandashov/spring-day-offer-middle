@@ -74,6 +74,12 @@ public class EmployeeService {
 
     @Transactional
     public void postNewTask(Integer employeeId, TaskDTO newTask) {
-        throw new java.lang.UnsupportedOperationException("implement postNewTask");
+        Task task = modelMapper.map(newTask, Task.class);
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow(() -> {
+            log.error("Не найден employee с id = {}", employeeId);
+            return new BusinessException(ExceptionStatus.NOT_FOUND_EMPLOYEE);
+        });
+        task.setEmployee(employee);
+        taskRepository.save(task);
     }
 }

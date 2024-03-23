@@ -42,9 +42,9 @@ public class EmployeeController {
         employeeService.changeTaskStatus(employeeId, taskId, status);
     }
 
-    @PostMapping("...")
+    @PostMapping("{id}/tasks")
     @ResponseStatus(HttpStatus.CREATED)
-    public void postNewTask(/* some params */) {
-        //employeeService.postNewTask ...
+    public void postNewTask(@PathVariable("id") Integer employeeId, @RequestBody TaskDTO task) {
+        employeeService.postNewTask(employeeId, task);
     }
 }
